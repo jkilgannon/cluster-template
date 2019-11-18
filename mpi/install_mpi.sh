@@ -9,10 +9,15 @@ set -x
 wget http://www.mpich.org/static/downloads/3.3.2/mpich-3.3.2.tar.gz
 tar -xzf mpich-3.3.2.tar.gz
 cd mpich-3.3.2
-./configure --disable-fortran --prefix=/software/mpi --exec-prefix=/software/mpiexec
+
+### Installation without Slurm
+#./configure --disable-fortran --prefix=/software/mpi --exec-prefix=/software/mpiexec
 
 ### Will want to use this command instead of the one right above, to use Slurm
 #./configure --disable-fortran --prefix=/software/mpi --exec-prefix=/software/mpiexec --with-slurm=PATH [and four others - use ./configure --help to see them!]
+
+### Use Slurm as workflow manager
+./configure --disable-fortran --prefix=/software/mpi --exec-prefix=/software/mpiexec --with-pmi=slurm --with-pm=no --with-slurm=/usr/sbin/slurmctld
 
 sudo make
 sudo make install
