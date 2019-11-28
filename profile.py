@@ -40,18 +40,19 @@ link = request.LAN("lan")
 
 for i in range(0,params.n + 3):
   if i == 0:
-    node = request.DockerContainer("nfs")
+    node = request.XenVM("nfs")
   elif i == beegfnNum:
-    node = request.DockerContainer("pfs")
+    node = request.XenVM("pfs")
   elif i == slurmNum:
-    node = request.DockerContainer("head")
+    node = request.XenVM("head")
   else:
-    node = request.DockerContainer("worker-" + str(i))
+    #node = request.DockerContainer("worker-" + str(i))
+    node = request.XenVM("worker-" + str(i))
   node.cores = 4
   node.ram = 4096
   
-  #node.disk_image = "urn:publicid:IDN+emulab.net+image+emulab-ops:UBUNTU18-64-STD"
-  node.disk_image = "urn:publicid:IDN+emulab.net+image+emulab-ops//docker-ubuntu18-std"
+  node.disk_image = "urn:publicid:IDN+emulab.net+image+emulab-ops:UBUNTU18-64-STD"
+  #node.disk_image = "urn:publicid:IDN+emulab.net+image+emulab-ops//docker-ubuntu18-std"
   
   iface = node.addInterface("if" + str(i+1))
   iface.component_id = "eth"+ str(i+1)
@@ -65,6 +66,8 @@ for i in range(0,params.n + 3):
   # Set scripts in the repository executable and readable.
   node.addService(pg.Execute(shell="sh", command="sudo find /local/repository/ -type f -iname \"*.sh\" -exec chmod 755 {} \;"))
   node.addService(pg.Execute(shell="sh", command="sudo chmod 755 /local/repository/beegfs/beegfs-deb8.list")) 
+  
+  node.addService(pg.Execute(shell="sh", command="sudo /local/repository/docker/install_docker.sh"))
   
   if i == 0:
     node.addService(pg.Execute(shell="sh", command="sudo /local/repository/nodeHead.sh " + str(params.n) + " " + str(slurmNum)))
