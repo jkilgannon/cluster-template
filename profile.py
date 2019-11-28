@@ -40,17 +40,18 @@ link = request.LAN("lan")
 
 for i in range(0,params.n + 3):
   if i == 0:
-    node = request.XenVM("nfs")
+    node = request.DockerContainer("nfs")
   elif i == beegfnNum:
-    node = request.XenVM("pfs")
+    node = request.DockerContainer("pfs")
   elif i == slurmNum:
-    node = request.XenVM("head")
+    node = request.DockerContainer("head")
   else:
-    node = request.XenVM("worker-" + str(i))
+    node = request.DockerContainer("worker-" + str(i))
   node.cores = 4
   node.ram = 4096
   
-  node.disk_image = "urn:publicid:IDN+emulab.net+image+emulab-ops:UBUNTU18-64-STD"
+  #node.disk_image = "urn:publicid:IDN+emulab.net+image+emulab-ops:UBUNTU18-64-STD"
+  node.disk_image = "urn:publicid:IDN+emulab.net+image+emulab-ops//docker-ubuntu18-std"
   
   iface = node.addInterface("if" + str(i+1))
   iface.component_id = "eth"+ str(i+1)
@@ -67,7 +68,7 @@ for i in range(0,params.n + 3):
   
   if i == 0:
     node.addService(pg.Execute(shell="sh", command="sudo /local/repository/nodeHead.sh " + str(params.n) + " " + str(slurmNum)))
-    node.addService(pg.Execute(shell="sh", command="sudo /local/repository/docker/install_docker.sh"))
+    #node.addService(pg.Execute(shell="sh", command="sudo /local/repository/docker/install_docker.sh"))
     node.addService(pg.Execute(shell="sh", command="sudo /local/repository/beegfs/clientBeeGFS.sh"))
     node.addService(pg.Execute(shell="sh", command="sudo /local/repository/passwordless/addpasswordless.sh " + str(params.n)))
   elif i == beegfnNum:
@@ -80,7 +81,7 @@ for i in range(0,params.n + 3):
     node.addService(pg.Execute(shell="sh", command="sudo /local/repository/mpi/install_mpi.sh " + str(params.n)))
     node.addService(pg.Execute(shell="sh", command="sudo /local/repository/passwordless/addpasswordless.sh " + str(params.n)))
   else:
-    node.addService(pg.Execute(shell="sh", command="sudo /local/repository/docker/install_docker.sh"))
+    #node.addService(pg.Execute(shell="sh", command="sudo /local/repository/docker/install_docker.sh"))
     node.addService(pg.Execute(shell="sh", command="sudo /local/repository/nodeWorker.sh"))
     node.addService(pg.Execute(shell="sh", command="sudo /local/repository/beegfs/clientBeeGFS.sh"))
     node.addService(pg.Execute(shell="sh", command="sudo /local/repository/slurm/slurmClient.sh " + str(params.n)))
