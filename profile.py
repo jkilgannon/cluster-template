@@ -21,7 +21,7 @@ nodeList = []
 
 tourDescription = \
 """
-This profile provides a Slurm and Open MPI cluster installed on Ubuntu 18.04.
+This profile provides a Docker-based Slurm and Open MPI cluster installed on Ubuntu 18.04.
 """
 
 #
