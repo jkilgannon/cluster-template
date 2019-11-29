@@ -70,7 +70,7 @@ for i in range(0,params.n + 3):
   node.addService(pg.Execute(shell="sh", command="sudo /local/repository/docker/install_docker.sh"))
   
   if i == 0:
-    node.addService(pg.Execute(shell="sh", command="sudo /local/repository/nodeHead.sh " + str(params.n) + " " + str(slurmNum)))
+    node.addService(pg.Execute(shell="sh", command="sudo /local/repository/nfs/startNfsHead.sh " + str(params.n) + " " + str(slurmNum)))
     #node.addService(pg.Execute(shell="sh", command="sudo /local/repository/docker/install_docker.sh"))
     node.addService(pg.Execute(shell="sh", command="sudo /local/repository/beegfs/clientBeeGFS.sh"))
     node.addService(pg.Execute(shell="sh", command="sudo /local/repository/passwordless/addpasswordless.sh " + str(params.n)))
