@@ -49,7 +49,8 @@ scripts=( docker-machine-prompt.bash docker-machine-wrapper.bash docker-machine.
 
 # Create docker swarm cluster
 sudo mkdir /software/configs
-LOCAL_DOCKER_IP=$(ip route get 192.168.1.0 | sed -n '/src/{s/.*src *\([^ ]*\).*/\1/p;q}')
+#LOCAL_DOCKER_IP=$(ip route get 192.168.1.0 | sed -n '/src/{s/.*src *\([^ ]*\).*/\1/p;q}')
+LOCAL_DOCKER_IP=$(ip route get $1.0 | sed -n '/src/{s/.*src *\([^ ]*\).*/\1/p;q}')
 sudo docker swarm init --advertise-addr $LOCAL_DOCKER_IP | awk '/docker swarm join --token/ {print}' > /software/configs/joinSwarm.sh
 sudo chmod 755 /software/configs/joinSwarm.sh
 
