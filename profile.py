@@ -70,13 +70,14 @@ for i in range(0,params.n + 3):
   #node.addService(pg.Execute(shell="sh", command="sudo /local/repository/docker/install_docker.sh"))
   
   if i == 0:
-    node.addService(pg.Execute(shell="sh", command="sudo /local/repository/nfs/startNfsHead.sh " + str(params.n) + " " + str(slurmNum)))
+    node.addService(pg.Execute(shell="sh", command="sudo /local/repository/nfs/startNfsHead.sh " + str(params.n) + " " + str(slurmNum) + " " + str(beegfnNum)))
     #node.addService(pg.Execute(shell="sh", command="sudo /local/repository/docker/install_docker.sh"))
     node.addService(pg.Execute(shell="sh", command="sudo /local/repository/dockerswarm/swarmHead.sh " + prefixForIP))
     node.addService(pg.Execute(shell="sh", command="sudo /local/repository/beegfs/clientBeeGFS.sh"))
     node.addService(pg.Execute(shell="sh", command="sudo /local/repository/passwordless/addpasswordless.sh " + str(params.n)))
   elif i == beegfnNum:
     node.addService(pg.Execute(shell="sh", command="sudo /local/repository/beegfs/serverBeeGFS.sh " + str(params.n)))
+    node.addService(pg.Execute(shell="sh", command="sudo /local/repository/nfs/installNfsClient.sh"))
     node.addService(pg.Execute(shell="sh", command="sudo /local/repository/dockerswarm/swarmWorker.sh"))
   elif i == slurmNum:
     node.addService(pg.Execute(shell="sh", command="sudo /local/repository/ldap/installLdapClient.sh"))
@@ -91,6 +92,7 @@ for i in range(0,params.n + 3):
     node.addService(pg.Execute(shell="sh", command="sudo /local/repository/nodeWorker.sh"))
     node.addService(pg.Execute(shell="sh", command="sudo /local/repository/beegfs/clientBeeGFS.sh"))
     node.addService(pg.Execute(shell="sh", command="sudo /local/repository/slurm/slurmClient.sh " + str(params.n)))
+    node.addService(pg.Execute(shell="sh", command="sudo /local/repository/nfs/installNfsClient.sh"))
     node.addService(pg.Execute(shell="sh", command="sudo /local/repository/dockerswarm/swarmWorker.sh"))
     node.addService(pg.Execute(shell="sh", command="sudo /local/repository/passwordless/addpasswordless.sh " + str(params.n)))
   
