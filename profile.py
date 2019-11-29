@@ -67,7 +67,7 @@ for i in range(0,params.n + 3):
   node.addService(pg.Execute(shell="sh", command="sudo find /local/repository/ -type f -iname \"*.sh\" -exec chmod 755 {} \;"))
   node.addService(pg.Execute(shell="sh", command="sudo chmod 755 /local/repository/beegfs/beegfs-deb8.list")) 
   
-  node.addService(pg.Execute(shell="sh", command="sudo /local/repository/docker/install_docker.sh"))
+  #node.addService(pg.Execute(shell="sh", command="sudo /local/repository/docker/install_docker.sh"))
   
   if i == 0:
     node.addService(pg.Execute(shell="sh", command="sudo /local/repository/nfs/startNfsHead.sh " + str(params.n) + " " + str(slurmNum)))
