@@ -100,8 +100,9 @@ for i in range(0,params.n + 3 + params.u):
     node.addService(pg.Execute(shell="sh", command="sudo /local/repository/mpi/install_mpi.sh " + str(params.n)))
     node.addService(pg.Execute(shell="sh", command="sudo /local/repository/dockerswarm/swarmWorker.sh"))
     node.addService(pg.Execute(shell="sh", command="sudo /local/repository/passwordless/addpasswordless.sh " + str(params.n)))
-    #elif i == unassignedNum:
+  elif i == unassignedNum:
     # Do nothing right now.  This is a blank machine.
+    nothingvar = 1
   else:
     #node.addService(pg.Execute(shell="sh", command="sudo /local/repository/docker/install_docker.sh"))
     node.addService(pg.Execute(shell="sh", command="sudo /local/repository/worker/nodeWorker.sh"))
