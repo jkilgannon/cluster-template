@@ -8,6 +8,7 @@ import geni.rspec.igext as IG
 pc = portal.Context()
 
 pc.defineParameter( "n", "Number of worker nodes, a number from 2 to 5", portal.ParameterType.INTEGER, 2 )
+pc.defineParameter( "u", "Number of unassigned nodes, a number from 0 to 1", portal.ParameterType.INTEGER, 0 )
 params = pc.bindParameters()
 
 # Create a Request object to start building the RSpec.
@@ -16,6 +17,9 @@ request = pc.makeRequestRSpec()
 if params.n < 2 or params.n > 5:
   portal.context.reportError( portal.ParameterError( "You must choose at least 2 and no more than 5 worker nodes." ) )
 
+if params.u < 0 or params.u > 1:
+  portal.context.reportError( portal.ParameterError( "You must choose at least 0 and no more than 1 unassigned node." ) )
+  
 # Lists for the nodes and such
 nodeList = []
 
@@ -35,16 +39,21 @@ prefixForIP = "192.168.1."
 
 beegfnNum = params.n + 1
 slurmNum = params.n + 2
+if params.u == 1:
+  unassignedNum = params.n + 3
 
 link = request.LAN("lan")
 
-for i in range(0,params.n + 3):
+#for i in range(0,params.n + 3):
+for i in range(0,params.n + 3 + params.u):
   if i == 0:
     node = request.XenVM("nfs")
   elif i == beegfnNum:
     node = request.XenVM("pfs")
   elif i == slurmNum:
     node = request.XenVM("head")
+  elif i == unassignedNum:
+    node = request.XenVM("unassigned")
   else:
     #node = request.DockerContainer("worker-" + str(i))
     node = request.XenVM("worker-" + str(i))
@@ -89,6 +98,8 @@ for i in range(0,params.n + 3):
     node.addService(pg.Execute(shell="sh", command="sudo /local/repository/mpi/install_mpi.sh " + str(params.n)))
     node.addService(pg.Execute(shell="sh", command="sudo /local/repository/dockerswarm/swarmWorker.sh"))
     node.addService(pg.Execute(shell="sh", command="sudo /local/repository/passwordless/addpasswordless.sh " + str(params.n)))
+  elif i == unassignedNum:
+    # Do nothing right now.  This is a blank machine.
   else:
     #node.addService(pg.Execute(shell="sh", command="sudo /local/repository/docker/install_docker.sh"))
     node.addService(pg.Execute(shell="sh", command="sudo /local/repository/worker/nodeWorker.sh"))
