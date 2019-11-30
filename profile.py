@@ -41,7 +41,9 @@ beegfnNum = params.n + 1
 slurmNum = params.n + 2
 if params.u == 1:
   unassignedNum = params.n + 3
-
+else:
+  unassignedNum = -1
+  
 link = request.LAN("lan")
 
 #for i in range(0,params.n + 3):
