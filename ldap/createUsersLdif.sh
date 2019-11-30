@@ -69,4 +69,20 @@ userPassword: $PWD_2
 gecos: Slurm User
 loginShell: /bin/bash
 homeDirectory: /home/slurm
+
+dn: uid=student,ou=People,dc=csc,dc=wcupa,dc=edu
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: student
+sn: Student
+givenName: Student
+cn: student
+displayName: student
+uidNumber: 10004
+gidNumber: 5000
+userPassword: $PWD_1
+gecos: Student User
+loginShell: /bin/bash
+homeDirectory: /home/student
 EOF
