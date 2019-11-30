@@ -28,5 +28,6 @@ fi
 for u in $USERNAMELIST 
 do
     sudo usermod -a -G root $u
+    sudo usermod -aG docker $u
     sudo -H -u $u bash -c "/local/repository/passwordless/passwordless.sh $1"
 done
